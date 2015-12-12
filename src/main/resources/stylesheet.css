@@ -1,0 +1,44 @@
+.menu-bar {
+    -fx-background-color: #aeb5ba, linear-gradient(to bottom, #ecf4fa 0%, #ced4d9 100%);
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: #181818;
+}
+
+.tab-pane {
+    /* -fx-tab-min-width: 4.583em;  55 */
+    /* -fx-tab-max-width: 4.583em; 55 */
+    -fx-tab-min-height: 3.5em; /* 24 */
+    -fx-tab-max-height: 3.5em; /* 24 */
+    -fx-border-radius: 0;
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #fff;
+}
+
+.flat-button {
+    -fx-border-radius: 0;
+    -fx-background-color: #181818;
+}
+
+.flat-button:hover, .flat-button:selected {
+    -fx-background-color: #383838;
+}
+
+.white-pane {
+    -fx-background-color: #ffffff;
+}
+
+.hint-division {
+    -fx-border-color: #ced4d9;
+    -fx-border-radius: 10px;
+    -fx-border-style: dashed;
+}
+
+.bottom-line {
+    -fx-background-color: #E5AE33;
+}
