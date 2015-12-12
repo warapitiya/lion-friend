@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by Malindu Warapitiya on 12/12/15.
  */
-public class Main extends Application {
+public class ServerMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {

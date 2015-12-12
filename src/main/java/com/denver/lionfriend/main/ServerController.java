@@ -7,7 +7,7 @@ import javafx.scene.control.ToggleButton;
 /**
  * Created by Malindu Warapitiya on 12/12/15.
  */
-public class EngineController {
+public class ServerController {
 
     private static boolean STATUS = false;
 
@@ -20,11 +20,11 @@ public class EngineController {
         if (switchBtn.isSelected()) {
             //start the server
             ServerDriver.getInstance().startServer();
-            EngineController.STATUS = true;
+            ServerController.STATUS = true;
             switchBtn.setText("Stop");
         } else {
             //if only server is already in start mode
-            if (EngineController.STATUS) {
+            if (ServerController.STATUS) {
                 ServerDriver.getInstance().stopServer();
             }
             switchBtn.setText("Start");

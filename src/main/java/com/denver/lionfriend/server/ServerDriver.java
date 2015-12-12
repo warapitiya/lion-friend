@@ -9,6 +9,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,8 +35,12 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
     private static final String SERVER_NAME = "LionFriendServer";
 
 
+    private HashMap<String, IClient> users = new HashMap<String, IClient>();
+
+
     /**
      * Private constructor
+     *
      * @throws RemoteException
      */
     private ServerDriver() throws RemoteException {
@@ -42,6 +48,7 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
 
     /**
      * Get instance method
+     *
      * @return
      */
     public static ServerDriver getInstance() {
@@ -91,15 +98,27 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
     }
 
 
-    public boolean RegisterToServer(IClient client, String Name) throws RemoteException {
-        return false;
+    public boolean RegisterToServer(IClient client, String name) throws RemoteException {
+
+        users.put(name, client);
+
+        return true;
     }
 
-    public void MsgToServer(String msg, String FrmUser, String ToName) throws RemoteException {
+    public void MsgToServer(String msg, String fromUser, String toName) throws RemoteException {
+
+        try {
+
+            for (IClient item : users.values()) {
+                item.MsgArrived(msg, fromUser);
+            }
+        } catch (Exception e) {
+            System.out.println("Awa " +  e);
+        }
 
     }
 
-    public void LogoutToServer(IClient client, String Name) throws RemoteException {
+    public void LogoutToServer(IClient client, String name) throws RemoteException {
 
     }
 }
