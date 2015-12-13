@@ -10,7 +10,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,27 +97,27 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
     }
 
 
-    public boolean RegisterToServer(IClient client, String name) throws RemoteException {
+    public boolean registerToServer(IClient client, String name) throws RemoteException {
 
         users.put(name, client);
+        System.out.println("Register Una " + name);
 
         return true;
     }
 
-    public void MsgToServer(String msg, String fromUser, String toName) throws RemoteException {
+    public void msgToServer(String msg, String fromUser, String toName) throws RemoteException {
 
         try {
-
             for (IClient item : users.values()) {
-                item.MsgArrived(msg, fromUser);
+                item.msgArrived(msg, fromUser);
             }
         } catch (Exception e) {
-            System.out.println("Awa " +  e);
+            System.out.println("Awa " + e);
         }
 
     }
 
-    public void LogoutToServer(IClient client, String name) throws RemoteException {
+    public void logoutToServer(IClient client, String name) throws RemoteException {
 
     }
 }

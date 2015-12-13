@@ -1,37 +1,42 @@
 package com.denver.lionfriend.client;
 
+import com.denver.lionfriend.entity.User;
 import com.denver.lionfriend.server.IServer;
+import javafx.scene.layout.VBox;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 
 /**
  * Created by Malindu Warapitiya on 12/12/15.
  */
-public class ClientDriver extends UnicastRemoteObject implements IClient {
+public class ClientDriver {
 
     private static IServer iServer;
 
-    public ClientDriver() throws RemoteException {
+    private static ClientDriver instance;
+
+    private VBox chatView;
+
+    private ClientDriver() {
     }
 
-    public void registerUserAndSendMessage() {
+    public static ClientDriver getInstance() {
+        if (instance == null) {
+            instance = new ClientDriver();
+        }
+        return instance;
+    }
 
-        String host = "localhost";
+    public void registerUser() {
 
         try {
 
-            iServer = (IServer) Naming.lookup("//" + host + "/LionFriendServer");
+            iServer = (IServer) Naming.lookup("//" + User.getInstance().getHostname() + "/LionFriendServer");
 
-            String name = "Yo" + Math.random();
-
-            iServer.RegisterToServer(new ClientDriver(), name);
-
-            iServer.MsgToServer("Hello World", name, "All Users");
+            iServer.registerToServer(new Client(), User.getInstance().getNickname());
 
         } catch (NotBoundException e) {
             e.printStackTrace();
@@ -43,11 +48,21 @@ public class ClientDriver extends UnicastRemoteObject implements IClient {
 
     }
 
-    public void UpdateUserList(List<String> ClientsName) throws RemoteException {
-
+    public boolean sendMessage(String message, String fromUser, String toUser) {
+        try {
+            iServer.msgToServer(message, fromUser, toUser);
+            return true;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public void MsgArrived(String msg, String FromUser) throws RemoteException {
-        System.out.println(msg + " : " + FromUser);
+    public VBox getChatView() {
+        return chatView;
+    }
+
+    public void setChatView(VBox chatView) {
+        this.chatView = chatView;
     }
 }
