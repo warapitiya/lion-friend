@@ -42,3 +42,9 @@
 .bottom-line {
     -fx-background-color: #E5AE33;
 }
+
+.round-red {
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 30;
+    -fx-text-fill: white;
+}

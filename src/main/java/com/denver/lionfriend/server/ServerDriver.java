@@ -9,7 +9,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,6 +72,7 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
             reg = java.rmi.registry.LocateRegistry.createRegistry(1099);
 
             Naming.bind(ServerDriver.SERVER_NAME, new ServerDriver());
+
             System.out.println("Server Ready");
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(ServerDriver.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,25 +102,44 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
 
     public boolean registerToServer(IClient client, String name) throws RemoteException {
 
-        users.put(name, client);
-        System.out.println("Register Una " + name);
+        if (!users.containsKey(name)) {
+            users.put(name, client);
+            List<String> keys = new ArrayList<String>(users.keySet());
 
-        return true;
+            for (IClient item : users.values()) {
+                item.updateUserList(keys);
+            }
+            return true;
+        }
+        return false;
     }
 
     public void msgToServer(String msg, String fromUser, String toName) throws RemoteException {
 
         try {
-            for (IClient item : users.values()) {
-                item.msgArrived(msg, fromUser);
+
+            if (toName.equalsIgnoreCase("Everyone")) {
+                for (IClient item : users.values()) {
+                    item.msgArrived(msg, fromUser);
+                }
+            } else {
+                users.get(toName).msgArrived(msg, fromUser);
+                users.get(fromUser).msgArrived(msg, fromUser);
             }
+
         } catch (Exception e) {
-            System.out.println("Awa " + e);
+            System.out.println("Exception " + e);
         }
 
     }
 
     public void logoutToServer(IClient client, String name) throws RemoteException {
+        users.remove(name);
 
+        List<String> keys = new ArrayList<String>(users.keySet());
+
+        for (IClient item : users.values()) {
+            item.updateUserList(keys);
+        }
     }
 }

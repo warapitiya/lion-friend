@@ -1,7 +1,9 @@
 package com.denver.lionfriend.main;
 
+import com.denver.lionfriend.client.ClientDriver;
 import com.denver.lionfriend.entity.User;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +36,11 @@ public class ClientMain extends Application {
 
     }
 
+    @Override
+    public void stop() {
+        ClientDriver.getInstance().logout();
+        System.exit(1);
+    }
 
     private String dialogPrompt(String initial, String title, String message) {
 
