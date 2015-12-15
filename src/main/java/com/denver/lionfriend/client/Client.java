@@ -4,32 +4,52 @@ import com.denver.lionfriend.entity.User;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Malindu Warapitiya on 12/13/15.
  */
 public class Client extends UnicastRemoteObject implements IClient {
 
+    /**
+     * Constructor override
+     * @throws RemoteException
+     */
     protected Client() throws RemoteException {
     }
 
+    /**
+     * Call the method addToList when a new user logged to the chat room
+     * @param clientsName
+     * @throws RemoteException
+     */
     public void updateUserList(List<String> clientsName) throws RemoteException {
-        System.out.println("update user");
         ClientDriver.getInstance().addToList(clientsName);
     }
 
+
+    /**
+     * method invoke when a new message arrived
+     * @param msg
+     * @param fromUser
+     * @throws RemoteException
+     */
     public void msgArrived(final String msg, final String fromUser) throws RemoteException {
         try {
 
             Platform.runLater(new Runnable() {
                 public void run() {
                     VBox chatDivision = new VBox();
-                    chatDivision.getChildren().add(new Text(fromUser));
+                    Text a = new Text(fromUser);
+                    a.setFill(Color.DARKBLUE);
+                    chatDivision.getChildren().add(a);
                     chatDivision.getChildren().add(new Text(msg));
 
                     if(User.getInstance().getNickname().equals(fromUser)){
@@ -45,7 +65,7 @@ public class Client extends UnicastRemoteObject implements IClient {
                 }
             });
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }

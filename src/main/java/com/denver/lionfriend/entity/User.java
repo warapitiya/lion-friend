@@ -1,18 +1,23 @@
 package com.denver.lionfriend.entity;
 
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Created by Malindu Warapitiya on 12/13/15.
  */
 public class User {
 
+    /**
+     * User singleton object
+     */
     private static User instance;
 
+    /**
+     * Name of the user
+     */
     private String nickname;
 
+    /**
+     * Host of the user
+     */
     private String hostname;
 
     private User() {

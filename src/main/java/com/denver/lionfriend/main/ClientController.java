@@ -1,11 +1,8 @@
 package com.denver.lionfriend.main;
 
-import com.denver.lionfriend.client.Client;
 import com.denver.lionfriend.client.ClientDriver;
 import com.denver.lionfriend.entity.User;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -26,6 +23,10 @@ public class ClientController {
     @FXML
     private ListView<String> userList;
 
+
+    /**
+     * initialize method invoke when the client UI onStart
+     */
     @FXML
     void initialize() {
         ClientDriver.getInstance().registerUser();
@@ -33,13 +34,20 @@ public class ClientController {
         ClientDriver.getInstance().setUserList(userList);
     }
 
+    /**
+     * onPress of send button in UI
+     */
     @FXML
     private void send() {
-        System.out.println(userList.getSelectionModel().getSelectedItem());
         ClientDriver.getInstance().sendMessage(messageConsole.getText(), User.getInstance().getNickname(), userList.getSelectionModel().getSelectedItem());
         messageConsole.setText("");
     }
 
+    /**
+     * exitApplication method invoke when the client UI onClose
+     *
+     * @param event
+     */
     @FXML
     public void exitApplication(ActionEvent event) {
         ClientDriver.getInstance().logout();

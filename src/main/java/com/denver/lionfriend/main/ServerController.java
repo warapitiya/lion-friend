@@ -1,6 +1,9 @@
 package com.denver.lionfriend.main;
 
+import com.denver.lionfriend.client.ClientDriver;
 import com.denver.lionfriend.server.ServerDriver;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 
@@ -14,6 +17,9 @@ public class ServerController {
     @FXML
     private ToggleButton switchBtn;
 
+    /**
+     * onPress of the start button in Server UI
+     */
     @FXML
     void startEngine() {
 
@@ -29,7 +35,15 @@ public class ServerController {
             }
             switchBtn.setText("Start");
         }
+    }
 
-
+    /**
+     * exitApplication method invoke when the server UI onClose
+     *
+     * @param event
+     */
+    @FXML
+    public void exitApplication(ActionEvent event) {
+        Platform.exit();
     }
 }

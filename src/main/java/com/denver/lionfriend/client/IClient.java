@@ -9,7 +9,19 @@ import java.util.List;
  */
 public interface IClient extends Remote {
 
+    /**
+     * update user list
+     * @param clientsName
+     * @throws RemoteException
+     */
     void updateUserList(List<String> clientsName) throws RemoteException;
+
+    /**
+     * message arrived
+     * @param msg
+     * @param fromUser
+     * @throws RemoteException
+     */
     void msgArrived(String msg, String fromUser) throws RemoteException;
 
 }

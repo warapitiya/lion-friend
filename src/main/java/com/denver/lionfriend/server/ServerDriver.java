@@ -72,8 +72,7 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
             reg = java.rmi.registry.LocateRegistry.createRegistry(1099);
 
             Naming.bind(ServerDriver.SERVER_NAME, new ServerDriver());
-
-            System.out.println("Server Ready");
+            Logger.getLogger(ServerDriver.class.getName()).log(Level.INFO, "Server started");
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(ServerDriver.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -91,7 +90,7 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
         try {
             reg.unbind(ServerDriver.SERVER_NAME);
             UnicastRemoteObject.unexportObject(reg, true);
-            System.out.println("Server Stopped");
+            Logger.getLogger(ServerDriver.class.getName()).log(Level.INFO, "Server stopped");
         } catch (RemoteException ex) {
             Logger.getLogger(ServerDriver.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
@@ -100,6 +99,14 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
     }
 
 
+    /**
+     * register a user to the server
+     *
+     * @param client
+     * @param name
+     * @return
+     * @throws RemoteException
+     */
     public boolean registerToServer(IClient client, String name) throws RemoteException {
 
         if (!users.containsKey(name)) {
@@ -110,10 +117,20 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
                 item.updateUserList(keys);
             }
             return true;
+        } else {
+            Logger.getLogger(ServerDriver.class.getName()).log(Level.INFO, "Nickname is already exists");
         }
         return false;
     }
 
+    /**
+     * message to the server
+     *
+     * @param msg
+     * @param fromUser
+     * @param toName
+     * @throws RemoteException
+     */
     public void msgToServer(String msg, String fromUser, String toName) throws RemoteException {
 
         try {
@@ -128,11 +145,19 @@ public class ServerDriver extends UnicastRemoteObject implements IServer {
             }
 
         } catch (Exception e) {
-            System.out.println("Exception " + e);
+            Logger.getLogger(ServerDriver.class.getName()).log(Level.SEVERE, null, e);
         }
 
     }
 
+
+    /**
+     * logout user
+     *
+     * @param client
+     * @param name
+     * @throws RemoteException
+     */
     public void logoutToServer(IClient client, String name) throws RemoteException {
         users.remove(name);
 
