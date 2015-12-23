@@ -1,4 +1,15 @@
+
 .idea/
 LionFriend.iml
 target
 out/
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
